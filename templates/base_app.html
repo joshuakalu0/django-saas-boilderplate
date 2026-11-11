@@ -1,0 +1,45 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Workspace{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  </head>
+  <body class="page-shell">
+    <div class="app-layout">
+      <aside class="sidebar">
+        <div>
+          <p class="eyebrow">Workspace</p>
+          <h2>{{ current_tenant.name|default:"Booster" }}</h2>
+          <p class="muted">{{ current_tenant.primary_domain|default:"Tenant app" }}</p>
+        </div>
+        <nav class="nav-list">
+          <a href="{% url 'workspace:dashboard' %}">Dashboard</a>
+          <a href="{% url 'workspace:members' %}">Members</a>
+          <a href="{% url 'workspace:projects' %}">Projects</a>
+          {% if membership and membership.role != "MEMBER" %}
+            <a href="{% url 'billing:overview' %}">Billing</a>
+            <a href="{% url 'workspace:audit-log' %}">Audit log</a>
+          {% endif %}
+          <a href="{% url 'workspace:profile' %}">Profile</a>
+        </nav>
+      </aside>
+      <main class="content-shell">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Signed in</p>
+            <strong>{{ request.user.name }}</strong>
+          </div>
+          <form method="post" action="//{{ PUBLIC_HOST|default:'app.lvh.me' }}{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="button button-secondary">Sign out</button>
+          </form>
+        </header>
+        {% include "components/messages.html" %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+</html>

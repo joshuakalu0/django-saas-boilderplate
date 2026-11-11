@@ -1,0 +1,25 @@
+{% extends "base_public.html" %}
+
+{% block title %}Booster SaaS{% endblock %}
+
+{% block content %}
+  <div class="card-intro">
+    <h2>Choose your next step</h2>
+    <p class="muted">Use the hosted auth flows on the public domain, then move into a tenant workspace.</p>
+  </div>
+  <div class="button-row">
+    <a class="button" href="{% url 'accounts:register' %}">Create workspace</a>
+    <a class="button button-secondary" href="{% url 'accounts:login' %}">Sign in</a>
+  </div>
+  {% if organizations %}
+    <div class="table-card">
+      <h3>Your organizations</h3>
+      <ul class="simple-list">
+        {% for access in organizations %}
+          <li>{{ access.organization.name }} · {{ access.role }} · {{ access.organization.primary_domain }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endblock %}
+

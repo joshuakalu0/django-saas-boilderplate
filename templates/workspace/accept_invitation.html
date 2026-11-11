@@ -1,0 +1,19 @@
+{% extends "base_public.html" %}
+
+{% block title %}Accept Invitation{% endblock %}
+
+{% block content %}
+  <div class="card-intro">
+    <h2>Accept invitation</h2>
+    <p class="muted">You’ve been invited to join {{ current_tenant.name|default:"this workspace" }} as {{ invite.role }}.</p>
+  </div>
+  <form method="post" class="form-grid">
+    {% csrf_token %}
+    {% if not request.user.is_authenticated %}
+      <label><span>Name</span><input type="text" name="name" required></label>
+      <label><span>Password</span><input type="password" name="password" required></label>
+    {% endif %}
+    <button type="submit" class="button">Join workspace</button>
+  </form>
+{% endblock %}
+

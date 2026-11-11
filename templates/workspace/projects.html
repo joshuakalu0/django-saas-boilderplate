@@ -1,0 +1,31 @@
+{% extends "base_app.html" %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+  <section class="panel split-panel">
+    <div>
+      <div class="section-heading">
+        <h1>Projects</h1>
+        <p class="muted">Create internal projects scoped to this tenant schema.</p>
+      </div>
+      <ul class="simple-list">
+        {% for project in projects %}
+          <li><strong>{{ project.name }}</strong> <span class="muted">{{ project.description }}</span></li>
+        {% empty %}
+          <li>No projects yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div>
+      <h2>Create project</h2>
+      <form method="post" class="form-grid">
+        {% csrf_token %}
+        <label><span>Name</span>{{ form.name }}</label>
+        <label><span>Description</span>{{ form.description }}</label>
+        <button type="submit" class="button">Create project</button>
+      </form>
+    </div>
+  </section>
+{% endblock %}
+

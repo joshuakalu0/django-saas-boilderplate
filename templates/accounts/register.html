@@ -1,0 +1,22 @@
+{% extends "base_public.html" %}
+
+{% block title %}Create Workspace{% endblock %}
+
+{% block content %}
+  <div class="card-intro">
+    <h2>Create a new workspace</h2>
+    <p class="muted">We’ll provision your tenant schema, owner account, and starter subscription.</p>
+  </div>
+  <form method="post" class="form-grid">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <label><span>Your name</span>{{ form.name }}</label>
+    <label><span>Email</span>{{ form.email }}</label>
+    <label><span>Password</span>{{ form.password }}</label>
+    <label><span>Organization name</span>{{ form.organization_name }}</label>
+    <label><span>Workspace slug</span>{{ form.organization_slug }}</label>
+    <button type="submit" class="button">Create workspace</button>
+  </form>
+  <p class="muted compact">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></p>
+{% endblock %}
+

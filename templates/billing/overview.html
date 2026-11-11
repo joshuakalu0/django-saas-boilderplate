@@ -1,0 +1,57 @@
+{% extends "base_app.html" %}
+
+{% block title %}Billing{% endblock %}
+
+{% block content %}
+  <section class="hero-grid">
+    <article class="stat-card">
+      <p class="eyebrow">Plan</p>
+      <h1>{{ subscription.plan|default:"FREE" }}</h1>
+    </article>
+    <article class="stat-card">
+      <p class="eyebrow">Status</p>
+      <h1>{{ subscription.status|default:"ACTIVE" }}</h1>
+    </article>
+    <article class="stat-card">
+      <p class="eyebrow">Current period end</p>
+      <h1 class="stat-small">{{ subscription.current_period_end|default:"-" }}</h1>
+    </article>
+  </section>
+
+  <section class="panel split-panel">
+    <div>
+      <h2>Upgrade or change plan</h2>
+      <form method="post" class="form-grid">
+        {% csrf_token %}
+        <label><span>Target plan</span>{{ form.plan }}</label>
+        <button type="submit" class="button">Start checkout</button>
+      </form>
+      <form method="post" action="{% url 'billing:portal' %}" class="inline-form">
+        {% csrf_token %}
+        <button type="submit" class="button button-secondary">Open customer portal</button>
+      </form>
+    </div>
+    <div>
+      <h2>API keys</h2>
+      <form method="post" action="{% url 'billing:api-key-create' %}" class="form-grid">
+        {% csrf_token %}
+        <label><span>Key name</span>{{ api_key_form.name }}</label>
+        <button type="submit" class="button">Create API key</button>
+      </form>
+      <ul class="simple-list">
+        {% for key in api_keys %}
+          <li>
+            <span>{{ key.name }}{% if key.last_used_at %} · last used {{ key.last_used_at }}{% endif %}</span>
+            <form method="post" action="{% url 'billing:api-key-revoke' key.id %}" class="inline-form">
+              {% csrf_token %}
+              <button type="submit" class="button button-small button-danger">Revoke</button>
+            </form>
+          </li>
+        {% empty %}
+          <li>No active API keys.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+{% endblock %}
+

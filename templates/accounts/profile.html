@@ -1,0 +1,19 @@
+{% extends "base_app.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="card-intro">
+      <h1>Profile</h1>
+      <p class="muted">Manage your display name and avatar URL.</p>
+    </div>
+    <form method="post" class="form-grid">
+      {% csrf_token %}
+      <label><span>Name</span>{{ form.name }}</label>
+      <label><span>Avatar URL</span>{{ form.avatar }}</label>
+      <button type="submit" class="button">Save changes</button>
+    </form>
+  </section>
+{% endblock %}
+

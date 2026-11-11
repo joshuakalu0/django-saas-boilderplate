@@ -1,0 +1,34 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Booster SaaS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  </head>
+  <body class="page-shell page-shell-public">
+    <main class="public-shell">
+      <section class="public-panel public-panel-brand">
+        <p class="eyebrow">Booster SaaS Django</p>
+        <h1>Schema-based multi-tenant SaaS built like a real product.</h1>
+        <p class="lede">
+          Shared public host, isolated tenant schemas, REST API, admin tooling, background
+          workers, and Stripe billing in one cohesive backend platform.
+        </p>
+        <div class="pill-row">
+          <span class="pill">Django 5</span>
+          <span class="pill">django-tenants</span>
+          <span class="pill">HTMX</span>
+          <span class="pill">DRF + JWT</span>
+          <span class="pill">Celery + Redis</span>
+        </div>
+      </section>
+      <section class="public-panel public-panel-card">
+        {% include "components/messages.html" %}
+        {% block content %}{% endblock %}
+      </section>
+    </main>
+  </body>
+</html>
+

@@ -1,0 +1,20 @@
+{% extends "base_public.html" %}
+
+{% block title %}Choose Workspace{% endblock %}
+
+{% block content %}
+  <div class="card-intro">
+    <h2>Select a workspace</h2>
+    <p class="muted">Your account belongs to multiple organizations.</p>
+  </div>
+  <form method="post" class="stack-form">
+    {% csrf_token %}
+    {% for access in organizations %}
+      <button class="choice-card" type="submit" name="organization_id" value="{{ access.organization_id }}">
+        <strong>{{ access.organization.name }}</strong>
+        <span>{{ access.organization.primary_domain }} · {{ access.role }}</span>
+      </button>
+    {% endfor %}
+  </form>
+{% endblock %}
+

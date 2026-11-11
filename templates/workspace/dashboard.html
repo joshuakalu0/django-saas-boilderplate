@@ -1,0 +1,49 @@
+{% extends "base_app.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <section class="hero-grid">
+    <article class="stat-card">
+      <p class="eyebrow">Members</p>
+      <h1>{{ member_count }}</h1>
+    </article>
+    <article class="stat-card">
+      <p class="eyebrow">Projects</p>
+      <h1>{{ projects|length }}</h1>
+    </article>
+    <article class="stat-card">
+      <p class="eyebrow">Plan</p>
+      <h1>{{ current_subscription.plan|default:"FREE" }}</h1>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="section-heading">
+      <h2>Recent projects</h2>
+      <a href="{% url 'workspace:projects' %}">Manage projects</a>
+    </div>
+    <ul class="simple-list">
+      {% for project in projects %}
+        <li><strong>{{ project.name }}</strong> <span class="muted">{{ project.description }}</span></li>
+      {% empty %}
+        <li>No projects yet.</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="panel">
+    <div class="section-heading">
+      <h2>Recent activity</h2>
+      <a href="{% url 'workspace:audit-log' %}">View audit log</a>
+    </div>
+    <ul class="simple-list">
+      {% for item in recent_audit_logs %}
+        <li>{{ item.action }} · {{ item.created_at }}</li>
+      {% empty %}
+        <li>No recent activity.</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock %}
+

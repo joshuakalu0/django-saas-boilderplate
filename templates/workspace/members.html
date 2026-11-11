@@ -1,0 +1,80 @@
+{% extends "base_app.html" %}
+
+{% block title %}Members{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="section-heading">
+      <h1>Members</h1>
+      <p class="muted">Invite teammates, manage roles, and transfer ownership safely.</p>
+    </div>
+    <div class="table-card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for member, user in members %}
+            <tr>
+              <td>{{ user.name|default:"Unknown user" }}</td>
+              <td>{{ user.email|default:"-" }}</td>
+              <td>{{ member.role }}</td>
+              <td>
+                {% if membership and membership.role != "MEMBER" %}
+                  <form method="post" action="{% url 'workspace:member-role' member.user_id %}" class="inline-form">
+                    {% csrf_token %}
+                    <select name="role">
+                      <option value="OWNER">OWNER</option>
+                      <option value="ADMIN">ADMIN</option>
+                      <option value="MEMBER">MEMBER</option>
+                    </select>
+                    <button type="submit" class="button button-small button-secondary">Update</button>
+                  </form>
+                  {% if member.role != "OWNER" %}
+                    <form method="post" action="{% url 'workspace:member-remove' member.user_id %}" class="inline-form">
+                      {% csrf_token %}
+                      <button type="submit" class="button button-small button-danger">Remove</button>
+                    </form>
+                  {% endif %}
+                {% else %}
+                  <span class="muted">View only</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4">No members found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {% if membership and membership.role != "MEMBER" %}
+    <section class="panel split-panel">
+      <div>
+        <h2>Invite member</h2>
+        <form method="post" action="{% url 'workspace:invite-member' %}" class="form-grid">
+          {% csrf_token %}
+          <label><span>Email</span>{{ invite_form.email }}</label>
+          <label><span>Role</span>{{ invite_form.role }}</label>
+          <button type="submit" class="button">Send invitation</button>
+        </form>
+      </div>
+      {% if membership.role == "OWNER" %}
+        <div>
+          <h2>Transfer ownership</h2>
+          <form method="post" action="{% url 'workspace:ownership-transfer' %}" class="form-grid">
+            {% csrf_token %}
+            <label><span>New owner user id</span>{{ ownership_form.user_id }}</label>
+            <button type="submit" class="button button-secondary">Transfer ownership</button>
+          </form>
+        </div>
+      {% endif %}
+    </section>
+  {% endif %}
+{% endblock %}

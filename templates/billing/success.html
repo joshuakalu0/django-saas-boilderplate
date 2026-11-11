@@ -1,0 +1,14 @@
+{% extends "base_app.html" %}
+
+{% block title %}Billing Updated{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="card-intro">
+      <h1>Billing flow completed</h1>
+      <p class="muted">Your Stripe session finished successfully. Refresh the billing page if plan details have not updated yet.</p>
+    </div>
+    <a href="{% url 'billing:overview' %}" class="button">Back to billing</a>
+  </section>
+{% endblock %}
+

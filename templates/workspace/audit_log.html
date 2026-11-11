@@ -1,0 +1,37 @@
+{% extends "base_app.html" %}
+
+{% block title %}Audit Log{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="section-heading">
+      <h1>Audit log</h1>
+      <p class="muted">Track privileged actions across your tenant workspace.</p>
+    </div>
+    <div class="table-card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>Action</th>
+            <th>Actor ID</th>
+            <th>Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in audit_logs %}
+            <tr>
+              <td>{{ item.created_at }}</td>
+              <td>{{ item.action }}</td>
+              <td>{{ item.actor_id }}</td>
+              <td>{{ item.target_id }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4">No audit entries yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
+
